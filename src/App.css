@@ -1,0 +1,637 @@
+/* Twitter/X 风格私人日记应用样式 */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7f9f9;
+  --bg-tertiary: #eff3f4;
+  --text-primary: #0f1419;
+  --text-secondary: #536471;
+  --text-tertiary: #8b98a5;
+  --accent: #1d9bf0;
+  --accent-hover: #1a8cd8;
+  --border: #eff3f4;
+  --danger: #f4212e;
+  --shadow: rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #000000;
+    --bg-secondary: #16181c;
+    --bg-tertiary: #1d1f23;
+    --text-primary: #e7e9ea;
+    --text-secondary: #71767b;
+    --text-tertiary: #8b98a5;
+    --border: #2f3336;
+    --shadow: rgba(0, 0, 0, 0.3);
+  }
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+/* 主布局 */
+.app {
+  display: flex;
+  min-height: 100vh;
+  max-width: 1265px;
+  margin: 0 auto;
+}
+
+/* 侧边栏 */
+.sidebar {
+  width: 275px;
+  padding: 20px;
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  padding: 12px 0 24px;
+}
+
+.app-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 24px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 20px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: fit-content;
+}
+
+.nav-item:hover {
+  background: var(--bg-tertiary);
+}
+
+.nav-item.active {
+  font-weight: 700;
+}
+
+.nav-item span:last-child {
+  font-size: 18px;
+}
+
+.nav-icon {
+  font-size: 22px;
+}
+
+/* 日期选择器 */
+.date-selector {
+  margin-top: auto;
+  position: relative;
+}
+
+.current-date {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.current-date:hover {
+  background: var(--bg-tertiary);
+}
+
+.date-label {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.weekday {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.calendar-icon {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* 日历下拉 */
+.calendar-dropdown {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 20px var(--shadow);
+  margin-bottom: 8px;
+  z-index: 100;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.calendar-header button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--accent);
+  border-radius: 50%;
+}
+
+.calendar-header button:hover {
+  background: var(--bg-tertiary);
+}
+
+.calendar-header span {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 50%;
+  color: var(--text-primary);
+}
+
+.calendar-day.empty {
+  cursor: default;
+}
+
+.calendar-day.valid:hover {
+  background: var(--bg-tertiary);
+}
+
+.calendar-day.selected {
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+}
+
+.calendar-day.has-entry::after {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.calendar-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.calendar-actions button {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text-primary);
+  transition: background 0.2s;
+}
+
+.calendar-actions button:hover {
+  background: var(--bg-tertiary);
+}
+
+/* 主内容区 */
+.main-content {
+  flex: 1;
+  max-width: 600px;
+  border-right: 1px solid var(--border);
+  min-height: 100vh;
+}
+
+/* 发布框 */
+.composer {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.composer-input {
+  width: 100%;
+  border: none;
+  resize: none;
+  font-size: 18px;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: transparent;
+  outline: none;
+  min-height: 80px;
+}
+
+.composer-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* 图片预览 */
+.image-preview {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.preview-item {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.remove-image {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+/* 情绪选择器 */
+.mood-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.mood-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.mood-options {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mood-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.mood-btn:hover {
+  transform: scale(1.15);
+}
+
+.mood-btn.selected {
+  transform: scale(1.1);
+}
+
+/* 工具栏 */
+.composer-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.toolbar-left {
+  display: flex;
+  gap: 4px;
+}
+
+.toolbar-btn {
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.2s;
+  color: var(--accent);
+}
+
+.toolbar-btn:hover {
+  background: rgba(29, 155, 240, 0.1);
+}
+
+.publish-btn {
+  padding: 10px 20px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.publish-btn:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.publish-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Feed */
+.feed {
+  padding-bottom: 100px;
+}
+
+.feed-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg-primary);
+  backdrop-filter: blur(12px);
+  z-index: 10;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.date-badge {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  padding: 4px 12px;
+  border-radius: 9999px;
+}
+
+.entry-count {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+/* 去年今日 */
+.on-this-day-section {
+  padding: 16px;
+}
+
+.on-this-day-section .section-title {
+  margin-bottom: 20px;
+}
+
+/* 日记卡片 */
+.diary-card {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.diary-card:hover {
+  background: var(--bg-secondary);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.mood-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 14px;
+}
+
+.mood-emoji {
+  font-size: 16px;
+}
+
+.mood-text {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.card-time {
+  font-size: 14px;
+  color: var(--text-tertiary);
+}
+
+.card-content {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* 卡片图片 */
+.card-images {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.card-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* 空状态 */
+.empty-state {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.empty-state p {
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+
+.empty-hint {
+  margin-top: 8px;
+  font-size: 14px !important;
+  color: var(--text-tertiary) !important;
+}
+
+/* 加载状态 */
+.loading {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-tertiary);
+}
+
+/* 响应式 */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 88px;
+  }
+  
+  .sidebar-header,
+  .nav-item span:last-child,
+  .date-selector {
+    display: none;
+  }
+  
+  .nav-item {
+    padding: 12px;
+    justify-content: center;
+  }
+  
+  .nav-icon {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    padding: 12px;
+  }
+  
+  .sidebar-header {
+    display: block;
+    padding: 0 0 12px;
+  }
+  
+  .sidebar-nav {
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 0;
+  }
+  
+  .nav-item {
+    padding: 8px 16px;
+  }
+  
+  .nav-item span:last-child {
+    display: inline;
+  }
+  
+  .date-selector {
+    display: none;
+  }
+  
+  .main-content {
+    max-width: 100%;
+    border-right: none;
+  }
+}
+
+/* 动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.diary-card {
+  animation: fadeIn 0.3s ease-out;
+}
